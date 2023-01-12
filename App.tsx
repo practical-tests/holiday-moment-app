@@ -2,10 +2,9 @@ import { NativeBaseProvider, StatusBar } from "native-base";
 import { NavigationContainer } from "@react-navigation/native";
 
 import { Routes } from "./src/routes";
-import AppContextProvider from "./src/context/AppContext";
+import { AppContextProvider } from "./src/context";
 
 export default function App() {
-  // const {} = useSWR()
   return (
     <NavigationContainer>
       <NativeBaseProvider>

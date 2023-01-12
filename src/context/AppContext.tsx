@@ -11,4 +11,4 @@ const AppContextProvider: React.FC<AppContextProviderProps> = ({
   return <AppContext.Provider value={null!}>{children}</AppContext.Provider>;
 };
 
-export default AppContextProvider;
+export { AppContextProvider };
