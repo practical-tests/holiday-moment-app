@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@react-navigation/native": "^6.1.2",
+    "@react-navigation/native-stack": "^6.9.8",
     "@types/react": "~18.0.24",
     "@types/react-native": "~0.70.6",
     "axios": "^1.2.2",
