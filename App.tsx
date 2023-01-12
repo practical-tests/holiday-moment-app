@@ -1,21 +1,20 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
-import Constants from 'expo-constants';
+import { NativeBaseProvider, StatusBar } from 'native-base';
+import { NavigationContainer } from '@react-navigation/native';
+
+import { Routes } from './src/routes';
+import AppContextProvider from './src/context/AppContext';
 
 export default function App() {
+  // const {} = useSWR()
   return (
-    <View style={styles.container}>
-      <Text>{JSON.stringify(Constants.expoConfig.extra)}</Text>
-      <StatusBar style="auto" />
-    </View>
+    <NavigationContainer>
+      <NativeBaseProvider>
+        <AppContextProvider>
+          <Routes />
+          <StatusBar />
+        </AppContextProvider>
+      </NativeBaseProvider>
+    </NavigationContainer>
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
