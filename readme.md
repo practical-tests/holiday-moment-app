@@ -5,3 +5,4 @@
  - <a href="https://nativebase.io/" target="_blank">**NativeBase**</a>: Componentes visuais;
  - <a href="https://reactnavigation.org/" target="_blank">**@react-navigation/native**</a>: Sistema de rotas;
  - <a href="https://axios-http.com/docs/intro" target="_blank">**axios**</a>: Realização de requisições http;
+ - <a href="https://swr.vercel.app/" target="_blank">**SWR**</a>: Hooks para Data Fetching;
