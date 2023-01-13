@@ -1,23 +1,40 @@
-import { useAssets } from "expo-asset";
-import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
+import useSWR from "swr";
+import { useContext } from "react";
+import { Center, FlatList } from "native-base";
 
-import {
-  Text,
-  Box,
-  Badge,
-  Flex,
-  Divider,
-  Image,
-  Menu,
-  Pressable,
-} from "native-base";
+import { FeedItem } from "./FeedItem";
+import { AppContext } from "../../context";
+import { Loading } from "../../components/Loading";
 
 const Home = () => {
-  const [assets] = useAssets(require("../../../assets/holiday.jpg"));
+  const { holidayDb } = useContext(AppContext);
+  const { isLoading, data } = useSWR(
+    "holidayDbKeys",
+    async () => {
+      const data = await holidayDb.getAll();
+      return data.sort(
+        (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime()
+      );
+    },
+    { refreshInterval: 0 }
+  );
+
+  if (isLoading)
+    return (
+      <Center height="full">
+        <Loading />
+      </Center>
+    );
+
   return (
-    // <Center>
-    <Box w={"full"}>
-      <Box width={"full"} borderRadius="md" backgroundColor="lightBlue.50">
+    <>
+      <FlatList
+        data={data || []}
+        keyExtractor={(item) => item.id}
+        renderItem={(item) => <FeedItem key={item.item.id} item={item.item} />}
+      />
+
+      {/* <Box width={"full"} borderRadius="md" backgroundColor="lightBlue.50">
         <Box marginBottom={"1.5"} padding={2}>
           <Flex
             direction="row"
@@ -30,7 +47,6 @@ const Home = () => {
                 Feriado
               </Badge>
               <Menu
-                w="190"
                 trigger={(triggerProps) => {
                   return (
                     <Pressable
@@ -54,7 +70,6 @@ const Home = () => {
             </Flex>
           </Flex>
         </Box>
-        {/* <Divider backgroundColor="blue.100" /> */}
         <Box>
           <Badge
             backgroundColor="lightBlue.50"
@@ -70,7 +85,10 @@ const Home = () => {
             01/01/2023
           </Badge>
           {assets && (
-            <Pressable onLongPress={() => console.log("long")}>
+            <Pressable
+              onLongPress={() => setShowFull(true)}
+              onPressOut={() => setShowFull(false)}
+            >
               <Image
                 source={{ uri: assets[0].uri }}
                 resizeMode="cover"
@@ -98,8 +116,35 @@ const Home = () => {
         </Box>
         <Divider backgroundColor="blue.100" />
       </Box>
-    </Box>
-    // </Center>
+      {showFull && (
+        <>
+          <Box
+            backgroundColor={"gray.900"}
+            style={{
+              opacity: 0.5,
+              position: "absolute",
+              top: 0,
+              bottom: 0,
+              left: 0,
+              right: 0,
+              zIndex: 5,
+            }}
+          />
+          <Center
+            style={{
+              position: "absolute",
+              top: 0,
+              bottom: 0,
+              left: 0,
+              right: 0,
+              zIndex: 10,
+            }}
+          >
+            <Text>Leo</Text>
+          </Center>
+        </>
+      )} */}
+    </>
   );
 };
 

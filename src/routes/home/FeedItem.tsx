@@ -1,3 +1,4 @@
+import dayjs from "dayjs";
 import { useAssets } from "expo-asset";
 import { Badge, Box, Divider, Flex, Image, Pressable, Text } from "native-base";
 
@@ -25,7 +26,9 @@ const FeedItem: React.FC<FeedItemProps> = ({ item, menu }) => {
       </Box>
 
       <Box>
-        <Badge {...styles.contentTag}>01/01/2023</Badge>
+        <Badge {...styles.contentTag}>
+          {dayjs(item.date).format("DD/MM/YYYY")}
+        </Badge>
         {item.photo ||
           (defaultImage && (
             <Pressable

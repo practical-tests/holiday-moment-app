@@ -27,14 +27,15 @@ const AppContextProvider: React.FC<AppContextProviderProps> = ({
     "holidayDb",
     async () => {
       const keys = await holidayDb.getKeys();
-      if (keys.length > 0) return;
+      if (keys && keys.length > 0) return false;
       const request = await API.holiday.getAll();
       const holidays = createHolidays.fromApiArray(request);
       await Promise.all(
         holidays.map((item) => holidayDb.insert(item.id, item))
       );
+      return true;
     },
-    { refreshInterval: 0, revalidateOnMount: false }
+    { refreshInterval: 0 }
   );
 
   if (isLoading)
