@@ -1,3 +1,5 @@
+import "react-native-get-random-values";
+
 import { NativeBaseProvider, StatusBar } from "native-base";
 import { NavigationContainer } from "@react-navigation/native";
 
