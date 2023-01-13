@@ -33,6 +33,14 @@ class Storage<TypeItem = any> {
       .map(([, value]) => JSON.parse(value));
   }
 
+  public async remove(key: string) {
+    const searchKey = key.startsWith(`${this.storageName}@`)
+      ? key
+      : `${this.storageName}@${key}`;
+
+    await AsyncStorage.removeItem(searchKey);
+  }
+
   public async clear() {
     const keys = await this.getKeys();
     await Promise.all(keys.map((key) => AsyncStorage.removeItem(key)));
