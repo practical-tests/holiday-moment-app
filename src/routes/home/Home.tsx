@@ -1,4 +1,6 @@
 import { useContext, useState, useCallback, useEffect } from "react";
+import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 import {
   Box,
   Center,
@@ -8,15 +10,19 @@ import {
   Pressable,
   Text,
 } from "native-base";
-import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 
 import { FeedItem } from "./FeedItem";
+import { Holiday } from "../../types";
 import { AppContext } from "../../context";
 import { Loading } from "../../components/Loading";
-import { Holiday } from "../../types";
 
-const Home = () => {
+interface HomeProps {
+  navigation: NativeStackNavigationProp<any>;
+}
+
+const Home: React.FC<HomeProps> = ({ navigation }) => {
   const { holidayDb } = useContext(AppContext);
+
   const [isLoading, setIsLoading] = useState(true);
   const [data, setData] = useState<Holiday[]>([]);
 
@@ -95,7 +101,9 @@ const Home = () => {
                   );
                 }}
               >
-                <Menu.Item>Editar</Menu.Item>
+                <Menu.Item onPress={() => navigation.navigate("editHoliday")}>
+                  Editar
+                </Menu.Item>
                 <Menu.Item>Registar momento</Menu.Item>
                 <Divider />
                 <Menu.Item onPress={() => removeHoliday(item.item)}>
