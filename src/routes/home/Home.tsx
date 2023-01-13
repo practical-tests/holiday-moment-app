@@ -1,5 +1,5 @@
 import { useContext, useState, useCallback, useEffect } from "react";
-import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 import {
   Box,
@@ -13,12 +13,11 @@ import {
 
 import { FeedItem } from "./FeedItem";
 import { Holiday } from "../../types";
+import { RootRoutesType } from "../types";
 import { AppContext } from "../../context";
 import { Loading } from "../../components/Loading";
 
-interface HomeProps {
-  navigation: NativeStackNavigationProp<any>;
-}
+interface HomeProps extends NativeStackScreenProps<RootRoutesType, "Home"> {}
 
 const Home: React.FC<HomeProps> = ({ navigation }) => {
   const { holidayDb } = useContext(AppContext);
@@ -101,7 +100,11 @@ const Home: React.FC<HomeProps> = ({ navigation }) => {
                   );
                 }}
               >
-                <Menu.Item onPress={() => navigation.navigate("editHoliday")}>
+                <Menu.Item
+                  onPress={() =>
+                    navigation.navigate("EditHoliday", { id: item.item.id })
+                  }
+                >
                   Editar
                 </Menu.Item>
                 <Menu.Item>Registar momento</Menu.Item>

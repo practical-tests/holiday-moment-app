@@ -1,15 +1,15 @@
-import { Button, Text } from "native-base";
-import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import { Text } from "native-base";
+import { NativeStackScreenProps } from "@react-navigation/native-stack";
+import { RootRoutesType } from "../types";
 
-interface EditHolidayProps {
-  navigation: NativeStackNavigationProp<any>;
-}
+interface EditHolidayProps
+  extends NativeStackScreenProps<RootRoutesType, "EditHoliday"> {}
 
-const EditHoliday: React.FC<EditHolidayProps> = ({ navigation }) => {
+const EditHoliday: React.FC<EditHolidayProps> = (props) => {
   return (
     <>
       <Text>Edit</Text>
-      <Button onPress={() => navigation.navigate("home")}>Home</Button>
+      {/* <Button onPress={() => navigation.navigate("home")}>Home</Button> */}
     </>
   );
 };
