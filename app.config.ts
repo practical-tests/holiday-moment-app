@@ -1,6 +1,6 @@
-import * as dotenv from 'dotenv'
+import * as dotenv from "dotenv";
 
-dotenv.config({ path: './.env' })
+dotenv.config({ path: "./.env" });
 
 module.exports = {
   name: "holiday-moment",
@@ -9,30 +9,29 @@ module.exports = {
   orientation: "portrait",
   icon: "./assets/icon.png",
   userInterfaceStyle: "light",
+  jsEngine: "hermes",
   splash: {
     image: "./assets/splash.png",
     resizeMode: "contain",
-    backgroundColor: "#ffffff"
+    backgroundColor: "#ffffff",
   },
   updates: {
-    fallbackToCacheTimeout: 0
+    fallbackToCacheTimeout: 0,
   },
-  assetBundlePatterns: [
-    "**/*"
-  ],
+  assetBundlePatterns: ["**/*"],
   ios: {
-    supportsTablet: true
+    supportsTablet: true,
   },
   android: {
     adaptiveIcon: {
       foregroundImage: "./assets/adaptive-icon.png",
-      backgroundColor: "#FFFFFF"
-    }
+      backgroundColor: "#FFFFFF",
+    },
   },
   web: {
-    favicon: "./assets/favicon.png"
+    favicon: "./assets/favicon.png",
   },
   extra: {
-    BASE_URL_API: process.env.BASE_URL_API
-  }
-}
+    BASE_URL_API: process.env.BASE_URL_API,
+  },
+};
