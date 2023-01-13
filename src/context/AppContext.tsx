@@ -1,4 +1,4 @@
-import useSWR from "swr";
+import { useCallback } from "react";
 import { Center } from "native-base";
 import { createContext, useMemo } from "react";
 
@@ -7,6 +7,7 @@ import { Holiday } from "../types";
 import { Storage } from "../utils";
 import { createHolidays } from "../helpers";
 import { Loading } from "../components/Loading";
+import { usePromise } from "../hooks";
 
 interface TypeContext {
   holidayDb: Storage<Holiday>;
@@ -23,22 +24,18 @@ const AppContextProvider: React.FC<AppContextProviderProps> = ({
 }) => {
   const holidayDb = useMemo(() => new Storage<Holiday>(`holidays`), []);
 
-  const { isLoading } = useSWR(
-    "holidayDb",
-    async () => {
-      const keys = await holidayDb.getKeys();
-      if (keys && keys.length > 0) return false;
-      const request = await API.holiday.getAll();
-      const holidays = createHolidays.fromApiArray(request);
-      await Promise.all(
-        holidays.map((item) => holidayDb.insert(item.id, item))
-      );
-      return true;
-    },
-    { refreshInterval: 0 }
-  );
+  const fetchHolidays = useCallback(async () => {
+    const keys = await holidayDb.getKeys();
+    if (keys && keys.length > 0) return false;
+    const request = await API.holiday.getAll();
+    const holidays = createHolidays.fromApiArray(request);
+    await Promise.all(holidays.map((item) => holidayDb.insert(item.id, item)));
+    return true;
+  }, []);
 
-  if (isLoading)
+  const { loading } = usePromise(fetchHolidays, { callOnStart: true });
+
+  if (loading.isLoading)
     return (
       <Center height="full">
         <Loading />
