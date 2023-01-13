@@ -16,7 +16,11 @@ class Storage<TypeItem = any> {
   }
 
   public async get(key: string): Promise<TypeItem | undefined> {
-    const item = await AsyncStorage.getItem(`${this.storageName}@${key}`);
+    const searchKey = key.startsWith(`${this.storageName}@`)
+      ? key
+      : `${this.storageName}@${key}`;
+    const item = await AsyncStorage.getItem(searchKey);
+
     if (!item) return undefined;
     return JSON.parse(item);
   }
