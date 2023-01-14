@@ -27,15 +27,12 @@ const Home: React.FC<HomeProps> = ({ navigation }) => {
     data,
     loading,
     call: fetchHolidays,
-  } = usePromise(
-    async () => {
-      const data = await holidayDb.getAll();
-      return data.sort(
-        (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime()
-      );
-    },
-    { callOnStart: true }
-  );
+  } = usePromise(async () => {
+    const data = await holidayDb.getAll();
+    return data.sort(
+      (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime()
+    );
+  });
 
   const removeHoliday = useCallback(async (holiday: Holiday) => {
     loading.setIsLoading(true);
@@ -44,10 +41,11 @@ const Home: React.FC<HomeProps> = ({ navigation }) => {
   }, []);
 
   useEffect(() => {
-    navigation.addListener("focus", () => {
+    const unsubscribe = navigation.addListener("focus", () => {
       setTitle("Feed");
       fetchHolidays();
     });
+    return unsubscribe;
   }, []);
 
   return (
@@ -112,7 +110,13 @@ const Home: React.FC<HomeProps> = ({ navigation }) => {
                 >
                   Editar
                 </Menu.Item>
-                <Menu.Item>Registar momento</Menu.Item>
+                <Menu.Item
+                  onPress={() =>
+                    navigation.navigate("CameraPhoto", { id: item.item.id })
+                  }
+                >
+                  Registar momento
+                </Menu.Item>
                 <Divider />
                 <Menu.Item onPress={() => removeHoliday(item.item)}>
                   <Text color="red.500">Remover</Text>

@@ -3,6 +3,7 @@ import { useCallback, useContext, useEffect } from "react";
 import { Box, Button, Center, Container, useToast } from "native-base";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 
+import { Holiday } from "../../types";
 import { usePromise } from "../../hooks";
 import { RootRoutesType } from "../types";
 import { AppContext } from "../../context";
@@ -13,7 +14,6 @@ import {
   InputControl,
   TextAreaControl,
 } from "../../components/form";
-import { Holiday } from "../../types";
 
 interface EditHolidayProps
   extends NativeStackScreenProps<RootRoutesType, "EditHoliday"> {}
@@ -39,10 +39,10 @@ const EditHoliday: React.FC<EditHolidayProps> = ({ route, navigation }) => {
   );
 
   useEffect(() => {
-    setTitle("Edição de feriado");
-    navigation.addListener("focus", () => {
+    const unsubscribe = navigation.addListener("focus", () => {
       setTitle("Edição de feriado");
     });
+    return unsubscribe;
   }, []);
 
   if (loading.isLoading)

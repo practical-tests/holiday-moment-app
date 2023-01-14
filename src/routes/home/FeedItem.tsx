@@ -1,7 +1,10 @@
 import dayjs from "dayjs";
+import { useEffect } from "react";
 import { useAssets } from "expo-asset";
+import * as FileSystem from "expo-file-system";
 import { Badge, Box, Divider, Flex, Image, Pressable, Text } from "native-base";
 
+import { usePromise } from "../../hooks";
 import { Holiday } from "../../types";
 
 interface FeedItemProps {
@@ -29,19 +32,21 @@ const FeedItem: React.FC<FeedItemProps> = ({ item, menu }) => {
         <Badge {...styles.contentTag}>
           {dayjs(item.date).format("DD/MM/YYYY")}
         </Badge>
-        {item.photo ||
-          (defaultImage && (
-            <Pressable
-            // onLongPress={() => setShowFull(true)}
-            // onPressOut={() => setShowFull(false)}
-            >
-              <Image
-                {...styles.contentImage}
-                source={{ uri: item.photo || defaultImage[0].uri }}
-                alt="Confraternização Universal"
-              />
-            </Pressable>
-          ))}
+
+        {defaultImage && (
+          <Pressable
+          // onLongPress={() => setShowFull(true)}
+          // onPressOut={() => setShowFull(false)}
+          >
+            <Image
+              {...styles.contentImage}
+              source={{
+                uri: item.photo || defaultImage[0].uri,
+              }}
+              alt="Confraternização Universal"
+            />
+          </Pressable>
+        )}
       </Box>
       <Divider backgroundColor="blue.100" />
       <Box>
