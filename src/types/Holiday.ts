@@ -5,5 +5,7 @@ export interface Holiday {
   description: string;
   legislation: string;
   type: "feriado";
+  latitude?: number;
+  longitude?: number;
   photo?: string;
 }

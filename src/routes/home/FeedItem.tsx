@@ -2,7 +2,17 @@ import dayjs from "dayjs";
 import { useEffect } from "react";
 import { useAssets } from "expo-asset";
 import * as FileSystem from "expo-file-system";
-import { Badge, Box, Divider, Flex, Image, Pressable, Text } from "native-base";
+import {
+  AspectRatio,
+  Badge,
+  Box,
+  Divider,
+  Flex,
+  Image,
+  Pressable,
+  RadioContext,
+  Text,
+} from "native-base";
 
 import { usePromise } from "../../hooks";
 import { Holiday } from "../../types";
@@ -32,19 +42,26 @@ const FeedItem: React.FC<FeedItemProps> = ({ item, menu }) => {
         <Badge {...styles.contentTag}>
           {dayjs(item.date).format("DD/MM/YYYY")}
         </Badge>
-
+        {item.latitude && item.longitude && (
+          <Badge {...styles.coordsTag}>
+            <Text>{item.latitude}</Text>
+            <Text>{item.longitude}</Text>
+          </Badge>
+        )}
         {defaultImage && (
           <Pressable
           // onLongPress={() => setShowFull(true)}
           // onPressOut={() => setShowFull(false)}
           >
-            <Image
-              {...styles.contentImage}
-              source={{
-                uri: item.photo || defaultImage[0].uri,
-              }}
-              alt="Confraternização Universal"
-            />
+            <AspectRatio ratio={1}>
+              <Image
+                {...styles.contentImage}
+                source={{
+                  uri: item.photo || defaultImage[0].uri,
+                }}
+                alt="Confraternização Universal"
+              />
+            </AspectRatio>
           </Pressable>
         )}
       </Box>
@@ -89,9 +106,19 @@ const styles = {
       zIndex: 10,
     },
   } as any,
+  coordsTag: {
+    backgroundColor: `lightBlue.50`,
+    borderTopLeftRadius: `xl`,
+    width: 24,
+    style: {
+      position: `absolute`,
+      bottom: 0,
+      right: 0,
+      zIndex: 10,
+    },
+  } as any,
   contentImage: {
     resizeMode: `cover`,
-    height: 48,
     marginTop: 1,
     marginBottom: 1,
   } as any,

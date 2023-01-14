@@ -1,9 +1,17 @@
 import { v4 as uuidv4 } from "uuid";
+import * as Location from "expo-location";
 import * as FileSystem from "expo-file-system";
 import { CameraType, Camera } from "expo-camera";
 import { Box, Button, Center, Flex } from "native-base";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import { useContext, useEffect, useState, useRef, useCallback } from "react";
+import {
+  useContext,
+  useEffect,
+  useState,
+  useRef,
+  useCallback,
+  useMemo,
+} from "react";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 
 import { Holiday } from "../../types";
@@ -19,8 +27,10 @@ const CameraPhoto: React.FC<CameraPhotoProps> = ({ route, navigation }) => {
   const { holidayDb, setTitle } = useContext(AppContext);
   const { id } = route.params;
 
-  const [type, setType] = useState(CameraType.back);
-  const [permission, requestPermission] = Camera.useCameraPermissions();
+  const [permissionCamera, permissionCameraFn] = Camera.useCameraPermissions();
+  const [permissionLocation, permissionLocationFn] =
+    Location.useForegroundPermissions();
+
   const refCamera = useRef<Camera>(null);
 
   const { data, loading } = usePromise(async () => holidayDb.get(id), {
@@ -40,9 +50,12 @@ const CameraPhoto: React.FC<CameraPhotoProps> = ({ route, navigation }) => {
         to: path,
       });
 
+      let { coords } = await Location.getCurrentPositionAsync({});
       await holidayDb.insert(data.id, {
         ...data,
         photo: path,
+        latitude: coords.latitude,
+        longitude: coords.longitude,
       });
 
       navigation.goBack();
@@ -50,23 +63,47 @@ const CameraPhoto: React.FC<CameraPhotoProps> = ({ route, navigation }) => {
     [refCamera]
   );
 
+  const requestPermissionCamera = useCallback(async () => {
+    let granted = permissionCamera?.granted || false;
+    try {
+      const response = await permissionCameraFn();
+      granted = response.granted;
+    } catch (error) {}
+    if (!granted) navigation.goBack();
+  }, [permissionCamera]);
+
+  const requestPermissionLocation = useCallback(async () => {
+    let granted = permissionLocation?.granted || false;
+    try {
+      const response = await permissionLocationFn();
+
+      granted = response.granted;
+    } catch (error) {}
+    if (!granted) navigation.goBack();
+  }, [permissionLocation]);
+
   useEffect(() => {
-    const unsubscribe = navigation.addListener("focus", () => {
+    const unsubscribe = navigation.addListener("focus", async () => {
       setTitle("Registrar momento");
-      if (permission?.granted !== true) {
-        requestPermission()
-          .then(({ granted }) => {
-            if (!granted) navigation.goBack();
-          })
-          .catch(() => {
-            navigation.goBack();
-          });
-      }
+      await requestPermissionCamera();
+      await requestPermissionLocation();
     });
     return unsubscribe;
   }, []);
 
-  if (permission?.granted !== true || loading.isLoading)
+  const showScreenLoading = useMemo(() => {
+    return (
+      permissionCamera?.granted !== true ||
+      permissionLocation?.granted !== true ||
+      loading.isLoading
+    );
+  }, [
+    loading.isLoading,
+    permissionCamera?.granted,
+    permissionLocation?.granted,
+  ]);
+
+  if (showScreenLoading)
     return (
       <Center height="full">
         <Loading />
