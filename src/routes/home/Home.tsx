@@ -1,4 +1,4 @@
-import { useContext, useCallback } from "react";
+import { useContext, useCallback, useEffect } from "react";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 import {
@@ -21,7 +21,7 @@ import { Loading } from "../../components/Loading";
 interface HomeProps extends NativeStackScreenProps<RootRoutesType, "Home"> {}
 
 const Home: React.FC<HomeProps> = ({ navigation }) => {
-  const { holidayDb } = useContext(AppContext);
+  const { holidayDb, setTitle } = useContext(AppContext);
 
   const {
     data,
@@ -41,6 +41,10 @@ const Home: React.FC<HomeProps> = ({ navigation }) => {
     loading.setIsLoading(true);
     await holidayDb.remove(holiday.id);
     await fetchHolidays();
+  }, []);
+
+  useEffect(() => {
+    setTitle("Feed");
   }, []);
 
   return (
