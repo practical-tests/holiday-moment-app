@@ -1,4 +1,5 @@
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { CameraPhoto } from "./cameraPhoto";
 import { EditHoliday } from "./editHoliday";
 import { Home } from "./home";
 import { RootRoutesType } from "./types";
@@ -13,6 +14,7 @@ const Routes: React.FC = () => {
     >
       <Stack.Screen name="Home" component={Home} />
       <Stack.Screen name="EditHoliday" component={EditHoliday} />
+      <Stack.Screen name="CameraPhoto" component={CameraPhoto} />
     </Stack.Navigator>
   );
 };

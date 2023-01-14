@@ -5,5 +5,5 @@ export interface Holiday {
   description: string;
   legislation: string;
   type: "feriado";
-  photo?: any;
+  photo?: string;
 }
