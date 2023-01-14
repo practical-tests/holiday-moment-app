@@ -8,7 +8,7 @@ const usePromise = <Data = any, Error = any>(
   fnPromise: () => Data | Promise<Data>,
   config?: Config
 ) => {
-  const [isLoading, setLoading] = useState(false);
+  const [isLoading, setLoading] = useState(config?.callOnStart || false);
   const [returnError, setReturnError] = useState<Error | undefined>(undefined);
   const [returnData, setReturnData] = useState<Data | undefined>(undefined);
 
