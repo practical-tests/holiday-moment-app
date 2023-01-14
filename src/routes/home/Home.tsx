@@ -44,7 +44,10 @@ const Home: React.FC<HomeProps> = ({ navigation }) => {
   }, []);
 
   useEffect(() => {
-    setTitle("Feed");
+    navigation.addListener("focus", () => {
+      setTitle("Feed");
+      fetchHolidays();
+    });
   }, []);
 
   return (

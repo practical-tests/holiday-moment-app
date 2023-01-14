@@ -78,7 +78,7 @@ const DateControl: React.FC<DateControlProps> = ({
           <FormControl.Label>{label}</FormControl.Label>
           <Input
             keyboardType="decimal-pad"
-            isDisabled
+            isDisabled={isDisabled}
             InputRightElement={
               <Pressable paddingRight={2} paddingLeft={2} isDisabled>
                 <MaterialCommunityIcons
