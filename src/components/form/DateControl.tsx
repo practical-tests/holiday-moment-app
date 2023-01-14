@@ -24,6 +24,7 @@ interface DateControlProps
     Omit<DateTimePickerProps, "onChange"> {
   format: string;
   onChange?: (value: Date) => void;
+  isDisabled?: boolean;
 }
 
 const DateControl: React.FC<DateControlProps> = ({
@@ -33,6 +34,7 @@ const DateControl: React.FC<DateControlProps> = ({
   value,
   format,
   onChange,
+  isDisabled,
   ...props
 }) => {
   const [showPicker, setShowPicker] = useState(false);
@@ -76,8 +78,9 @@ const DateControl: React.FC<DateControlProps> = ({
           <FormControl.Label>{label}</FormControl.Label>
           <Input
             keyboardType="decimal-pad"
+            isDisabled
             InputRightElement={
-              <Pressable paddingRight={2} paddingLeft={2}>
+              <Pressable paddingRight={2} paddingLeft={2} isDisabled>
                 <MaterialCommunityIcons
                   name="calendar"
                   size={20}
