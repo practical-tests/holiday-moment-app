@@ -1,7 +1,5 @@
 import dayjs from "dayjs";
-import { useEffect } from "react";
 import { useAssets } from "expo-asset";
-import * as FileSystem from "expo-file-system";
 import {
   AspectRatio,
   Badge,
@@ -10,19 +8,18 @@ import {
   Flex,
   Image,
   Pressable,
-  RadioContext,
   Text,
 } from "native-base";
 
-import { usePromise } from "../../hooks";
 import { Holiday } from "../../types";
 
 interface FeedItemProps {
   item: Holiday;
   menu?: React.ReactNode;
+  handlePreview: (item: Holiday | undefined) => void;
 }
 
-const FeedItem: React.FC<FeedItemProps> = ({ item, menu }) => {
+const FeedItem: React.FC<FeedItemProps> = ({ item, menu, handlePreview }) => {
   const [defaultImage] = useAssets(require("../../../assets/holiday.jpg"));
 
   return (
@@ -50,8 +47,8 @@ const FeedItem: React.FC<FeedItemProps> = ({ item, menu }) => {
         )}
         {defaultImage && (
           <Pressable
-          // onLongPress={() => setShowFull(true)}
-          // onPressOut={() => setShowFull(false)}
+            onPressIn={() => handlePreview(item)}
+            onPressOut={() => handlePreview(undefined)}
           >
             <AspectRatio ratio={1}>
               <Image

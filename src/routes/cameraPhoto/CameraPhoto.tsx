@@ -2,7 +2,7 @@ import { v4 as uuidv4 } from "uuid";
 import * as Location from "expo-location";
 import * as FileSystem from "expo-file-system";
 import { CameraType, Camera } from "expo-camera";
-import { Box, Button, Center, Flex } from "native-base";
+import { Box, Button, Center, Flex, Spinner } from "native-base";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import {
   useContext,
@@ -37,37 +37,38 @@ const CameraPhoto: React.FC<CameraPhotoProps> = ({ route, navigation }) => {
     callOnStart: true,
   });
 
-  const takePhoto = useCallback(
-    async (data: Holiday) => {
-      if (!refCamera.current) return;
-      const path = FileSystem.documentDirectory + uuidv4() + ".jpg";
+  const _takePhoto = useCallback(async () => {
+    if (!refCamera.current) return;
+    const path = FileSystem.documentDirectory + uuidv4() + ".jpg";
 
-      const photo = await refCamera.current.takePictureAsync();
-      if (data.photo) await FileSystem.deleteAsync(data.photo);
+    const photo = await refCamera.current.takePictureAsync();
+    refCamera.current.pausePreview();
 
-      await FileSystem.moveAsync({
-        from: photo.uri,
-        to: path,
-      });
+    if (data.photo) await FileSystem.deleteAsync(data.photo);
 
-      let { coords } = await Location.getCurrentPositionAsync({});
-      await holidayDb.insert(data.id, {
-        ...data,
-        photo: path,
-        latitude: coords.latitude,
-        longitude: coords.longitude,
-      });
+    await FileSystem.moveAsync({
+      from: photo.uri,
+      to: path,
+    });
 
-      navigation.goBack();
-    },
-    [refCamera]
-  );
+    let { coords } = await Location.getCurrentPositionAsync({});
+    await holidayDb.insert(data.id, {
+      ...data,
+      photo: path,
+      latitude: coords.latitude,
+      longitude: coords.longitude,
+    });
+
+    navigation.goBack();
+  }, [refCamera, data, navigation]);
+
+  const { loading: loadingPhoto, call: takePhoto } = usePromise(_takePhoto);
 
   const requestPermissionCamera = useCallback(async () => {
     let granted = permissionCamera?.granted || false;
     try {
       const response = await permissionCameraFn();
-      granted = response.granted;
+      granted = response?.granted || false;
     } catch (error) {}
     if (!granted) navigation.goBack();
   }, [permissionCamera]);
@@ -77,14 +78,14 @@ const CameraPhoto: React.FC<CameraPhotoProps> = ({ route, navigation }) => {
     try {
       const response = await permissionLocationFn();
 
-      granted = response.granted;
+      granted = response?.granted || false;
     } catch (error) {}
     if (!granted) navigation.goBack();
   }, [permissionLocation]);
 
   useEffect(() => {
     const unsubscribe = navigation.addListener("focus", async () => {
-      setTitle("Registrar momento");
+      setTitle("Registrar feriado");
       await requestPermissionCamera();
       await requestPermissionLocation();
     });
@@ -129,10 +130,15 @@ const CameraPhoto: React.FC<CameraPhotoProps> = ({ route, navigation }) => {
           colorScheme="blue"
           rounded="full"
           w="16"
-          onPress={() => takePhoto(data)}
-          // disabled={loadingTake.isLoading}
+          onPress={() => takePhoto()}
+          disabled={loadingPhoto.isLoading}
         >
-          <MaterialCommunityIcons color="white" name="camera" size={40} />
+          {loadingPhoto.isLoading && (
+            <Spinner accessibilityLabel="Loading" size={40} color="white" />
+          )}
+          {!loadingPhoto.isLoading && (
+            <MaterialCommunityIcons color="white" name="camera" size={40} />
+          )}
         </Button>
       </Box>
     </Flex>

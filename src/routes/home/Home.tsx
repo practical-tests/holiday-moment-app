@@ -1,4 +1,4 @@
-import { useContext, useCallback, useEffect } from "react";
+import { useContext, useCallback, useEffect, useState } from "react";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 import {
@@ -16,13 +16,16 @@ import { Holiday } from "../../types";
 import { usePromise } from "../../hooks";
 import { RootRoutesType } from "../types";
 import { AppContext } from "../../context";
+import { PreviewFeed } from "./PreviewFeed";
 import { Loading } from "../../components/Loading";
 
 interface HomeProps extends NativeStackScreenProps<RootRoutesType, "Home"> {}
 
 const Home: React.FC<HomeProps> = ({ navigation }) => {
   const { holidayDb, setTitle } = useContext(AppContext);
-
+  const [currentPress, setCurrentPress] = useState<Holiday | undefined>(
+    undefined
+  );
   const {
     data,
     loading,
@@ -86,6 +89,7 @@ const Home: React.FC<HomeProps> = ({ navigation }) => {
           <FeedItem
             key={item.item.id}
             item={item.item}
+            handlePreview={setCurrentPress}
             menu={
               <Menu
                 trigger={(triggerProps) => {
@@ -115,7 +119,7 @@ const Home: React.FC<HomeProps> = ({ navigation }) => {
                     navigation.navigate("CameraPhoto", { id: item.item.id })
                   }
                 >
-                  Registar momento
+                  Registar Feriado
                 </Menu.Item>
                 <Divider />
                 <Menu.Item onPress={() => removeHoliday(item.item)}>
@@ -126,36 +130,7 @@ const Home: React.FC<HomeProps> = ({ navigation }) => {
           />
         )}
       />
-
-      {/* 
-      {showFull && (
-        <>
-          <Box
-            backgroundColor={"gray.900"}
-            style={{
-              opacity: 0.5,
-              position: "absolute",
-              top: 0,
-              bottom: 0,
-              left: 0,
-              right: 0,
-              zIndex: 5,
-            }}
-          />
-          <Center
-            style={{
-              position: "absolute",
-              top: 0,
-              bottom: 0,
-              left: 0,
-              right: 0,
-              zIndex: 10,
-            }}
-          >
-            <Text>Leo</Text>
-          </Center>
-        </>
-      )} */}
+      <PreviewFeed item={currentPress} />
     </>
   );
 };
