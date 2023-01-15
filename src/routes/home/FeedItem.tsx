@@ -47,7 +47,7 @@ const FeedItem: React.FC<FeedItemProps> = ({ item, menu, handlePreview }) => {
         )}
         {defaultImage && (
           <Pressable
-            onPressIn={() => handlePreview(item)}
+            onLongPress={() => handlePreview(item)}
             onPressOut={() => handlePreview(undefined)}
           >
             <AspectRatio ratio={1}>
