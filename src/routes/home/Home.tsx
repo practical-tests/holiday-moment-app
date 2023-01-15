@@ -11,13 +11,12 @@ import {
   Text,
 } from "native-base";
 
-import { FeedItem } from "./FeedItem";
 import { Holiday } from "../../types";
 import { usePromise } from "../../hooks";
 import { RootRoutesType } from "../types";
 import { AppContext } from "../../context";
-import { PreviewFeed } from "./PreviewFeed";
 import { Loading } from "../../components/Loading";
+import { FeedItem, PreviewFeed, FeedItemMenu } from "./components";
 
 interface HomeProps extends NativeStackScreenProps<RootRoutesType, "Home"> {}
 
@@ -26,6 +25,7 @@ const Home: React.FC<HomeProps> = ({ navigation }) => {
   const [currentPress, setCurrentPress] = useState<Holiday | undefined>(
     undefined
   );
+
   const {
     data,
     loading,
@@ -37,9 +37,9 @@ const Home: React.FC<HomeProps> = ({ navigation }) => {
     );
   });
 
-  const removeHoliday = useCallback(async (holiday: Holiday) => {
+  const removeHoliday = useCallback(async (id: string) => {
     loading.setIsLoading(true);
-    await holidayDb.remove(holiday.id);
+    await holidayDb.remove(id);
     await fetchHolidays();
   }, []);
 
@@ -91,41 +91,11 @@ const Home: React.FC<HomeProps> = ({ navigation }) => {
             item={item.item}
             handlePreview={setCurrentPress}
             menu={
-              <Menu
-                trigger={(triggerProps) => {
-                  return (
-                    <Pressable
-                      accessibilityLabel="More options menu"
-                      {...triggerProps}
-                    >
-                      <MaterialCommunityIcons
-                        name="dots-vertical"
-                        size={20}
-                        color="#73757d"
-                      />
-                    </Pressable>
-                  );
-                }}
-              >
-                <Menu.Item
-                  onPress={() =>
-                    navigation.navigate("EditHoliday", { id: item.item.id })
-                  }
-                >
-                  Editar
-                </Menu.Item>
-                <Menu.Item
-                  onPress={() =>
-                    navigation.navigate("CameraPhoto", { id: item.item.id })
-                  }
-                >
-                  Registar Feriado
-                </Menu.Item>
-                <Divider />
-                <Menu.Item onPress={() => removeHoliday(item.item)}>
-                  <Text color="red.500">Remover</Text>
-                </Menu.Item>
-              </Menu>
+              <FeedItemMenu
+                handleRemove={removeHoliday}
+                holidayId={item.item.id}
+                navigate={navigation.navigate}
+              />
             }
           />
         )}

@@ -10,14 +10,14 @@ import {
   Text,
 } from "native-base";
 
-import { Holiday } from "../../types";
+import { Holiday } from "../../../types";
 
 interface PreviewFeedProps {
   item?: Holiday;
 }
 
 const PreviewFeed: React.FC<PreviewFeedProps> = ({ item }) => {
-  const [defaultImage] = useAssets(require("../../../assets/holiday.jpg"));
+  const [defaultImage] = useAssets(require("../../../../assets/holiday.jpg"));
   if (!item) return <></>;
 
   return (

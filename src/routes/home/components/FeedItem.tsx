@@ -11,7 +11,7 @@ import {
   Text,
 } from "native-base";
 
-import { Holiday } from "../../types";
+import { Holiday } from "../../../types";
 
 interface FeedItemProps {
   item: Holiday;
@@ -20,7 +20,7 @@ interface FeedItemProps {
 }
 
 const FeedItem: React.FC<FeedItemProps> = ({ item, menu, handlePreview }) => {
-  const [defaultImage] = useAssets(require("../../../assets/holiday.jpg"));
+  const [defaultImage] = useAssets(require("../../../../assets/holiday.jpg"));
 
   return (
     <Box {...styles.container}>
