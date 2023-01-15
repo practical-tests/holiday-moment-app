@@ -1,14 +1,14 @@
 import { useNavigation } from "@react-navigation/native";
 import { useCallback, useState, createContext, useMemo } from "react";
-import { Box, Center, Flex, HStack, Pressable, Text } from "native-base";
-import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
+import { Center } from "native-base";
 
 import { API } from "../api";
 import { Holiday } from "../types";
 import { Storage } from "../utils";
+import { usePromise } from "../hooks";
 import { createHolidays } from "../helpers";
 import { Loading } from "../components/Loading";
-import { usePromise } from "../hooks";
+import { AppHeader } from "../components/AppHeader";
 
 interface TypeContext {
   holidayDb: Storage<Holiday>;
@@ -54,37 +54,11 @@ const AppContextProvider: React.FC<AppContextProviderProps> = ({
         setTitle,
       }}
     >
-      <HStack
-        bg="#117cfd"
-        px="1"
-        pb="2"
-        justifyContent="space-between"
-        alignItems="center"
-        w="100%"
-      >
-        <Box w="10">
-          {navigation.canGoBack() && (
-            <Pressable
-              w="full"
-              alignItems="center"
-              justifyContent="center"
-              onPress={() => navigation.goBack()}
-            >
-              <MaterialCommunityIcons
-                name="arrow-left"
-                size={20}
-                color="white"
-              />
-            </Pressable>
-          )}
-        </Box>
-        <Flex alignItems="center" justifyContent="center" flex="1">
-          <Text color="white" fontSize="20" fontFamily="Poppins_700Bold">
-            {title}
-          </Text>
-        </Flex>
-        <Box w="10" />
-      </HStack>
+      <AppHeader
+        title={title}
+        canGoBack={navigation.canGoBack()}
+        goBack={navigation.goBack}
+      />
       {children}
     </AppContext.Provider>
   );

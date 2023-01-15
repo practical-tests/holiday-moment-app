@@ -13,7 +13,7 @@ import {
   DateControl,
   InputControl,
   TextAreaControl,
-} from "../../components/form";
+} from "../../components/Form";
 
 interface EditHolidayProps
   extends NativeStackScreenProps<RootRoutesType, "EditHoliday"> {}
