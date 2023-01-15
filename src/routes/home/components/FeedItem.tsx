@@ -23,24 +23,44 @@ const FeedItem: React.FC<FeedItemProps> = ({ item, menu, handlePreview }) => {
   const [defaultImage] = useAssets(require("../../../../assets/holiday.jpg"));
 
   return (
-    <Box {...styles.container}>
-      <Box {...styles.headerSession}>
-        <Flex {...styles.headerRow}>
+    <Box w="full" borderRadius="md" backgroundColor="lightBlue.50">
+      <Box mb="1.5" p="2">
+        <Flex
+          direction="row"
+          alignItems="center"
+          justifyContent="space-between"
+        >
           <Text bold>{item.title}</Text>
-
-          <Flex {...styles.headerActions}>
-            <Badge {...styles.headerTag}>Feriado</Badge>
+          <Flex direction="row">
+            <Badge colorScheme="darkBlue" mr="3">
+              Feriado
+            </Badge>
             {menu}
           </Flex>
         </Flex>
       </Box>
 
       <Box>
-        <Badge {...styles.contentTag}>
+        <Badge
+          backgroundColor="lightBlue.50"
+          borderRightRadius="xl"
+          w="24"
+          style={{ position: `absolute`, top: 0, left: 0, zIndex: 10 }}
+        >
           {dayjs(item.date).format("DD/MM/YYYY")}
         </Badge>
         {item.latitude && item.longitude && (
-          <Badge {...styles.coordsTag}>
+          <Badge
+            backgroundColor="lightBlue.50"
+            borderLeftRadius="xl"
+            w="24"
+            style={{
+              position: `absolute`,
+              bottom: 0,
+              right: 0,
+              zIndex: 10,
+            }}
+          >
             <Text>{item.latitude}</Text>
             <Text>{item.longitude}</Text>
           </Badge>
@@ -52,7 +72,9 @@ const FeedItem: React.FC<FeedItemProps> = ({ item, menu, handlePreview }) => {
           >
             <AspectRatio ratio={1}>
               <Image
-                {...styles.contentImage}
+                resizeMode="cover"
+                mt="1"
+                mb="1"
                 source={{
                   uri: item.photo || defaultImage[0].uri,
                 }}
@@ -62,70 +84,14 @@ const FeedItem: React.FC<FeedItemProps> = ({ item, menu, handlePreview }) => {
           </Pressable>
         )}
       </Box>
-      <Divider backgroundColor="blue.100" />
+      <Divider bg="blue.100" />
       <Box>
-        <Text {...styles.contentText}>{item.description}</Text>
+        <Text color="gray.800" fontSize="xs" isTruncated noOfLines={1} p="2">
+          {item.description}
+        </Text>
       </Box>
     </Box>
   );
-};
-
-const styles = {
-  container: {
-    width: `full`,
-    borderRadius: `md`,
-    backgroundColor: `lightBlue.50`,
-  },
-  headerSession: {
-    marginBottom: 1.5,
-    padding: 2,
-  },
-  headerRow: {
-    direction: `row`,
-    alignItems: `center`,
-    justifyContent: `space-between`,
-  } as any,
-  headerActions: {
-    direction: `row`,
-  } as any,
-  headerTag: {
-    colorScheme: `darkBlue`,
-    marginRight: 3,
-  },
-  contentTag: {
-    backgroundColor: `lightBlue.50`,
-    borderBottomRightRadius: `xl`,
-    width: 24,
-    style: {
-      position: `absolute`,
-      top: 0,
-      left: 0,
-      zIndex: 10,
-    },
-  } as any,
-  coordsTag: {
-    backgroundColor: `lightBlue.50`,
-    borderTopLeftRadius: `xl`,
-    width: 24,
-    style: {
-      position: `absolute`,
-      bottom: 0,
-      right: 0,
-      zIndex: 10,
-    },
-  } as any,
-  contentImage: {
-    resizeMode: `cover`,
-    marginTop: 1,
-    marginBottom: 1,
-  } as any,
-  contentText: {
-    color: `gray.800`,
-    fontSize: `xs`,
-    isTruncated: true,
-    noOfLines: 2,
-    padding: 2,
-  },
 };
 
 export { FeedItem };

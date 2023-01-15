@@ -1,15 +1,6 @@
+import { Box, Center, FlatList } from "native-base";
 import { useContext, useCallback, useEffect, useState } from "react";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
-import {
-  Box,
-  Center,
-  Divider,
-  FlatList,
-  Menu,
-  Pressable,
-  Text,
-} from "native-base";
 
 import { Holiday } from "../../types";
 import { usePromise } from "../../hooks";
@@ -56,7 +47,7 @@ const Home: React.FC<HomeProps> = ({ navigation }) => {
       {loading.isLoading && (
         <>
           <Box
-            backgroundColor={"gray.100"}
+            backgroundColor="gray.100"
             style={{
               opacity: 0.4,
               position: "absolute",

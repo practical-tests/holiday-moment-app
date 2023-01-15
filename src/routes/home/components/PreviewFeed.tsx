@@ -23,7 +23,7 @@ const PreviewFeed: React.FC<PreviewFeedProps> = ({ item }) => {
   return (
     <>
       <Box
-        backgroundColor={"gray.900"}
+        backgroundColor="gray.900"
         style={{
           opacity: 0.5,
           position: "absolute",
@@ -44,8 +44,14 @@ const PreviewFeed: React.FC<PreviewFeedProps> = ({ item }) => {
           zIndex: 10,
         }}
       >
-        <Box {...styles.container}>
-          <Flex {...styles.headerRow}>
+        <Box w="full" borderRadius="md" backgroundColor="lightBlue.50">
+          <Flex
+            mb="1.5"
+            p="2"
+            direction="row"
+            alignItems="center"
+            justifyContent="center"
+          >
             <Text bold>{item.title}</Text>
           </Flex>
 
@@ -53,7 +59,8 @@ const PreviewFeed: React.FC<PreviewFeedProps> = ({ item }) => {
             {defaultImage && (
               <AspectRatio ratio={1}>
                 <Image
-                  {...styles.contentImage}
+                  resizeMode="cover"
+                  my="1"
                   source={{
                     uri: item.photo || defaultImage[0].uri,
                   }}
@@ -62,7 +69,11 @@ const PreviewFeed: React.FC<PreviewFeedProps> = ({ item }) => {
               </AspectRatio>
             )}
           </Box>
-          <Flex {...styles.infoRow}>
+          <Flex
+            direction="row"
+            alignItems="center"
+            justifyContent="space-between"
+          >
             <Text fontSize="xs" color="gray.500">
               Data: {dayjs(item.date).format("DD/MM/YYYY")}
             </Text>
@@ -74,48 +85,16 @@ const PreviewFeed: React.FC<PreviewFeedProps> = ({ item }) => {
           </Flex>
           <Divider backgroundColor="blue.100" />
 
-          <Text {...styles.contentText}>{item.description}</Text>
-          <Text {...styles.contentTextDescription}>{item.legislation}</Text>
+          <Text color="gray.800" fontSize="md" p="2">
+            {item.description}
+          </Text>
+          <Text color="gray.800" fontSize="xs" isTruncated noOfLines={2} p="2">
+            {item.legislation}
+          </Text>
         </Box>
       </Center>
     </>
   );
 };
 
-const styles = {
-  container: {
-    width: `full`,
-    borderRadius: `md`,
-    backgroundColor: `lightBlue.50`,
-  },
-  headerRow: {
-    marginBottom: 1.5,
-    padding: 2,
-    direction: `row`,
-    alignItems: `center`,
-    justifyContent: `center`,
-  } as any,
-  contentImage: {
-    resizeMode: `cover`,
-    marginTop: 1,
-    marginBottom: 1,
-  } as any,
-  contentText: {
-    color: `gray.800`,
-    fontSize: `md`,
-    padding: 2,
-  },
-  contentTextDescription: {
-    color: `gray.800`,
-    fontSize: `xs`,
-    isTruncated: true,
-    noOfLines: 2,
-    padding: 2,
-  },
-  infoRow: {
-    direction: `row`,
-    alignItems: `center`,
-    justifyContent: `space-between`,
-  } as any,
-};
 export { PreviewFeed };
