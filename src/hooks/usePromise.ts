@@ -22,7 +22,7 @@ const usePromise = <Data = any, Error = any>(
     } finally {
       setLoading(false);
     }
-  }, []);
+  }, [fnPromise]);
 
   useEffect(() => {
     if (config?.callOnStart) callPromise();
