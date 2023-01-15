@@ -23,6 +23,7 @@ module.exports = {
     supportsTablet: true,
   },
   android: {
+    package: "lsbelini.holiday.moment",
     adaptiveIcon: {
       foregroundImage: "./assets/adaptive-icon.png",
       backgroundColor: "#FFFFFF",
@@ -32,6 +33,9 @@ module.exports = {
     favicon: "./assets/favicon.png",
   },
   extra: {
-    BASE_URL_API: process.env.BASE_URL_API,
+    BASE_URL_API: "http://dadosbr.github.io/feriados/",
+    eas: {
+      projectId: "4c9d401b-f7d9-4332-9b43-6aec15650489",
+    },
   },
 };
