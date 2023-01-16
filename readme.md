@@ -17,6 +17,25 @@
 
 **OBS:** O atributo de foto e os dados das coordenadas deve somente existir localmente no aplicativo.
 
+## Sobre o APP
+
+- Criado uma tela de _Feeds_ para a listagem de feriados onde:
+  - Carrega feriados da API quando não contem nenhum armazenado na memoria interna;
+  - Feriados com data variáveis _(variableDates)_ foram separados como novos;
+  - Feriados com data _(date)_ são exibidos apenas no ano atual;
+  - Os feriados são ordenados por data;
+  - Exibe parte da descrição, nome, data, imagem e coordenadas;
+  - Feriados sem localização, não exibe a localização;
+  - Feriados sem imagem é carregado uma padrão;
+  - Botões de ação em cada item do _Feed_ (_Editar_, _Registrar Feriado_ e _Remover_);
+  - **Pressionar e segurar _longPress_ sobre uma imagem é exibido mais detalhes;**
+- Editar:
+  - Edita um feriado especifico;
+  - Possível alterar a data tanto digitando como selecionando;
+- Registrar Feriado:
+  - Solicita a permissão de acesso a camera e gps;
+  - Salva a foto na memoria interna do APP;
+
 ## Menções
 
 - Hooks
@@ -50,3 +69,5 @@
 ---
 
 - Demais pacotes utilizados foram para auxilio dos principais;
+
+## Capturas de tela
