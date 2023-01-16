@@ -70,4 +70,10 @@
 
 - Demais pacotes utilizados foram para auxilio dos principais;
 
-## Capturas de tela
+## Screenshots
+
+<img src="https://github.com/practical-hiring-tests/holiday-moment-app/raw/main/screenshot/Home.png" width="18%"></img>
+<img src="https://github.com/practical-hiring-tests/holiday-moment-app/raw/main/screenshot/Home_Menu.png" width="18%"></img>
+<img src="https://github.com/practical-hiring-tests/holiday-moment-app/raw/main/screenshot/Edit.png" width="18%"></img>
+<img src="https://github.com/practical-hiring-tests/holiday-moment-app/raw/main/screenshot/Edit_Picker.png" width="18%"></img>
+<img src="https://github.com/practical-hiring-tests/holiday-moment-app/raw/main/screenshot/Camera.png" width="18%"></img>
